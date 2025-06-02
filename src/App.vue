@@ -53,7 +53,12 @@ methods: {
       this.currentLanguage = lang; // Aggiorna la lingua corrente
       this.$i18n.locale = lang; // Cambia la lingua nell'i18n
     },
-  },
+    downloadSetup() {
+  const url = 'https://github.com/Alexxandrot/SFReleases/releases/download/V2.5.0.7/SpeedFeverTest1.zip'; 
+  window.open(url, '_blank');
+}
+  }
+
 
   
 }
@@ -95,7 +100,7 @@ methods: {
                 </div>
           
                 <div class="containerButton">
-                      <button class="button type1">
+                      <button class="button type1"  @click="downloadSetup">
                          <span class="btn-txt  poppins-semibold">{{ $t('download') }}</span>
                       </button>
                 </div>
