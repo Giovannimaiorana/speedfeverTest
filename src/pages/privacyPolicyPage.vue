@@ -1,55 +1,76 @@
 <script>
 export default {
-  name: "sectionPrivacy"
+    name: "sectionPrivacy"
 }
 </script>
 
 <template>
     <div class="containerGenPrivacy">
         <div class="containerLogo">
-            <router-link to="/"><img class="logo" src="/img/biancoSuRosso.webp"  alt=""></router-link> 
-          <!--  <router-link to="/" class="text-white text-4xl poppins-semibold cursor-pointer hov">HOME</router-link>-->
+            <router-link to="/"><img class="logo" src="/img/biancoSuRosso.webp" alt=""></router-link>
+            <!--  <router-link to="/" class="text-white text-4xl poppins-semibold cursor-pointer hov">HOME</router-link>-->
         </div>
         <div class="wrapperPrivacy">
             <div class="rectangleInfoPrivacy">
-                <p class="font-bold text-white poppins-light text-center">{{ $t('step1') }}</p>
-                <span class=" text-white poppins-light personalizedtraf mt-2"> {{ $t('step2') }} : </span>
-                <span class=" text-white poppins-light personalizedtraf1"> 23/01/2025</span>
-                <p class="text-white poppins-light text-sm mt-2">{{ $t('step3') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2">{{ $t('step4') }}</p>
-                <p class=" text-white poppins-light personalizedtraf"> {{ $t('step5') }}</p>
-                <span class="text-white poppins-light personalizedtraf">- {{ $t('step6') }} : </span> <span class="text-white poppins-light text-sm ">{{ $t('step7') }}</span>
-                <p class="text-white poppins-light text-sm "> {{ $t('step8') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2">{{ $t('step9') }}</p>
-                <p class=" text-white poppins-light personalizedtraf"> {{ $t('step10') }}</p>
-                <p class="text-white poppins-light text-sm">- {{ $t('step11') }} </p>
-                <p class="text-white poppins-light text-sm">-  {{ $t('step12') }}</p>
-                <p class="text-white poppins-light text-sm">{{ $t('step13') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2">{{ $t('step14') }}</p>
-                <p class="text-white poppins-light text-sm">{{ $t('step15') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2"> {{ $t('step16') }}</p>
-                <span class="text-white poppins-light personalizedtraf">-{{ $t('step17') }}</span> <span class="text-white poppins-light text-sm "> {{ $t('step18') }}</span>
-                <p></p>
-                <span class="text-white poppins-light personalizedtraf">-{{ $t('step19') }} </span> <span class="text-white poppins-light text-sm "> {{ $t('step20') }}</span>
-                <p></p>
-                <span class="text-white poppins-light personalizedtraf">- {{ $t('step21') }} </span> <span class="text-white poppins-light text-sm ">{{ $t('step22') }}</span>
-                <p></p>
-                <span class="text-white poppins-light personalizedtraf"></span> <span class="text-white poppins-light text-sm "> {{ $t('step24') }}</span>
-                    <p></p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2">{{ $t('step25') }}</p>
-                <p class="text-white poppins-light text-sm">{{ $t('step26') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2"> {{ $t('step27') }}</p>
-                <p class="text-white poppins-light text-sm">{{ $t('step28') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2"> {{ $t('step29') }}</p>
-                <p class="text-white poppins-light text-sm"> {{ $t('step30') }}</p>
-                <p class="text-white poppins-light text-lg personalizedtraf2 mt-2">{{ $t('step31') }}</p>
-                <p class=" text-white poppins-light personalizedtraf"> {{ $t('step32') }}</p>
-                <span class="text-white poppins-light personalizedtraf">- Email :{{ $t('step33') }} </span> <span class="text-white poppins-light text-sm "> Inserire Email di Contatto]</span>
-                <p></p>
-                <span class="text-white poppins-light personalizedtraf">- {{ $t('step35') }}</span> <span class="text-white poppins-light text-sm "> VIA COLLE FICORONE 11 - 00020 - AGOSTA (RM)</span>
-                <p class="text-white poppins-light text-sm">{{ $t('step37') }}.
-                </p>
-                <router-link to="/"><p class="text-white text-center mt-5">BACK</p></router-link> 
+                <p class="font-bold text-white poppins-light text-center">Privacy Policy – Speed Fever
+                    Who We Are <br />
+                    Speed Fever is provided by OVERFAM s.r.l.s<br />
+                    Registered office: VIA COLLE FICORONE 11 - 00020 - AGOSTA (RM), Italy<br />
+                    Email: support@speedfever.appv
+
+                    Data We Collect<br />
+                    Email and password (only if you register directly with us)
+
+                    Email only (if you use external providers like Google, Discord, Twitch, Facebook)
+
+                    Local technical data (active game processes and UDP ports) used solely to run the overlay
+
+                    Payment data managed by Stripe (not stored by us)
+
+                    Why We Collect Your Data
+                    To manage your access and authentication
+
+                    To monitor and improve the service
+
+                    To handle subscriptions and payments via secure platforms
+
+                    We do not use your data for marketing or advertising.
+
+                    How We Protect Your Data
+                    We use advanced security measures
+
+                    Passwords are encrypted and not visible to us
+
+                    Your Rights
+                    You can at any time:
+
+                    Access, correct, or delete your data
+
+                    Restrict or object to processing
+
+                    Withdraw consent (if applicable)
+
+                    Request data portability
+
+                    File a complaint with the Data Protection Authority
+
+                    Data Retention
+                    We keep your data only as long as necessary to provide the service and comply with legal
+                    obligations.
+
+                    Other Information
+                    We do not sell or share your data with third parties
+
+                    Payments are handled through Stripe, compliant with security standards
+
+                    The app may use technical cookies necessary for operation
+
+                    Updates to This Privacy Policy
+                    We may update this Privacy Policy; we will inform you via the app or email.</p>
+
+                <router-link to="/">
+                    <p class="text-white text-center mt-5">BACK</p>
+                </router-link>
             </div>
         </div>
 
@@ -57,7 +78,7 @@ export default {
 </template>
 
 <style scoped>
-.containerGenPrivacy{
+.containerGenPrivacy {
     width: 100%;
     height: 100vh;
     background-color: black;
@@ -68,14 +89,16 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.wrapperPrivacy{
+
+.wrapperPrivacy {
     width: 100%;
     height: auto;
     display: flex;
     justify-content: center;
 
 }
-.rectangleInfoPrivacy{
+
+.rectangleInfoPrivacy {
     width: 90%;
     height: 70vh;
     overflow-y: scroll;
@@ -83,28 +106,35 @@ export default {
     border-radius: 10px;
     padding: 20px;
 }
-.textcolor{
+
+.textcolor {
     color: #9d191d;
 }
-.containerLogo{
+
+.containerLogo {
     width: 100%;
     display: flex;
     align-items: center;
 }
-.containerLogo img{
+
+.containerLogo img {
     height: 100px;
 }
-.hov:hover{
+
+.hov:hover {
     color: #9d191d;
 }
-.personalizedtraf{
+
+.personalizedtraf {
     font-size: 10px;
     font-weight: bold;
 }
-.personalizedtraf1{
+
+.personalizedtraf1 {
     font-size: 10px;
 }
-.personalizedtraf2{
+
+.personalizedtraf2 {
     font-weight: bold;
 }
 </style>

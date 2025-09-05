@@ -19,10 +19,12 @@
                 </div>
         </div>
         <div class="containerCo">
-            <p class="font-bold text-white poppins-light">* {{ $t('footerOne') }}</p>
+
+           
             <p class="font-bold text-white poppins-light"> <span class="font-bold"> {{ $t('officeRegistred') }}</span> VIA COLLE FICORONE 11 - 00020 - AGOSTA (RM)</p>
             <p class="font-bold text-white poppins-light"><span class="font-bold">P.IVA</span> 17439841002 </p>
             <p class="font-bold text-white poppins-light">{{ $t('by') }} <span class="font-bold">OVERFAM</span></p>
+            <router-link to="/privacy"  class="underline cursor-pointer font-bold text-white text-xs">Privacy Policy</router-link>
         </div>
 
     </div>

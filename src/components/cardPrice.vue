@@ -1,5 +1,45 @@
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 
+const currentVersion = ref(2600);
+const latestVersion = ref(null);
+
+async function checkForUpdates() {
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/Alexxandrot/SFReleases/releases/latest',
+      {
+        headers: { 'User-Agent': 'SpeedFeverFrontend/1.0' },
+      }
+    );
+    const data = await response.json();
+    const tag = parseInt(data.tag_name);
+    console.log("Ultima versione:", tag);
+
+    if (!isNaN(tag)) {
+      latestVersion.value = tag;
+      if (tag > currentVersion.value) {
+        if (confirm(`È disponibile una nuova versione (${tag}). Vuoi scaricarla ora?`)) {
+          downloadSetup(tag);
+        }
+      }
+    } else {
+      alert(`Formato versione non valido: ${data.tag_name}`);
+    }
+  } catch (err) {
+    alert('Errore nel controllare gli aggiornamenti: ' + err.message);
+  }
+}
+
+function downloadSetup(version) {
+  const url = `https://github.com/Alexxandrot/SFReleases/releases/download/${version}/SpeedFeverInstaller${version}.exe`;
+  window.open(url, '_blank');
+}
+
+// controllo aggiornamenti al mount
+onMounted(() => {
+  checkForUpdates();
+});
 </script>
 <template>
     <div class="cardPriceContainer">
@@ -21,7 +61,7 @@
                     <p class=" poppins-semibold  text-white text-left mt-5 text-2xl">Free</p> 
                 </div>
                 <div class="bodyPrice mt-5">
-                    <button class="button type1">
+                    <button class="button type1" @click="downloadSetup(latestVersion )">
                          <span class="btn-txt text-sm poppins-semibold">DOWNLOAD FREE</span>
                       </button>
                 </div>
@@ -32,16 +72,17 @@
                     <p class="poppins-semibold text-white text-2xl text-left ">Yearly</p>
                 </div>
                 <div class="bodyCard">
-                    <p class="text-white text-xs">Ideal for individuals who need advanced features with annual billing.</p>
+                    <p class="text-white text-xs ">Ideal for individuals who need advanced features with annual billing.</p>
                     <p class=" poppins-light  text-white text-left mt-3 text-sm"> - Access to premium features</p> 
                     <p class=" poppins-light  text-white text-left mt-2 text-sm"> - Support 24/7</p> 
                     <p class=" poppins-light  text-white text-left mt-2 text-sm"> - Yearly billing</p> 
                 </div>
                 <div class="bodyPrice">
-                    <p class=" poppins-semibold  text-white text-left mt-5 text-2xl"> 24.90€</p> 
+                    <p class=" poppins-semibold  sales text-left mt-5 text-sm line-through"> 58.80€</p> 
+                    <p class=" poppins-semibold  text-white text-left  text-2xl"> 24.90€</p> 
                 </div>
                 <div class="bodyPrice mt-5">
-                    <button class="button type1">
+                    <button class="button type1" @click="downloadSetup(latestVersion )">
                          <span class="btn-txt poppins-semibold">DOWNLOAD APP</span>
                       </button>
                 </div>
@@ -57,10 +98,11 @@
                     <p class=" poppins-light  text-white text-left mt-2 text-sm"> - Monthly billing</p> 
                 </div>
                 <div class="bodyPrice">
-                    <p class=" poppins-semibold  text-white text-left mt-5 text-2xl"> 2.90€</p> 
+                    <p class=" poppins-semibold  sales text-left mt-5 text-sm line-through"> 4.90€</p> 
+                    <p class=" poppins-semibold  text-white text-left text-2xl"> 2.90€</p> 
                 </div>
                 <div class="bodyPrice mt-5">
-                    <button class="button type1">
+                    <button class="button type1" @click="downloadSetup(latestVersion)">
                          <span class="btn-txt poppins-semibold">DOWNLOAD APP</span>
                       </button>
                 </div>
@@ -99,6 +141,9 @@
 
 
 }
+.sales{
+    color: #9d191d;
+}
 .cardBig{
     width: 30%;
     height: auto;
@@ -119,7 +164,8 @@
 .bodyPrice{
     width: 100%;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 .sezioneTitle{
     width: 100%;
@@ -198,6 +244,9 @@
     background-color: rgba(0, 0, 0, 0.476);
     backdrop-filter: blur(2px);
     box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.18);
+}
+.button{
+    display: none;
 }
 }
 </style>

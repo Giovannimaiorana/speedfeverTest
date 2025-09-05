@@ -7,7 +7,7 @@
         <div class="wrapperContainer">
             <div class="wrapperTitleContainer">
                 <div class="containerLogo">
-                    <img class="logo" src="/img/appOverlay.svg" alt="">
+                    <img class="logo" src="/img/mottoSection.png" alt="">
                 </div>
                 <div class="containerMotto">
                     <div>

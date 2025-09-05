@@ -13,7 +13,7 @@ export const store = reactive({
         'Traction Circle': {
             'description': `Il diagramma delle accelerazioni ti aiuta a capire i limiti: della macchina, del setup e di te stesso.`,
             'descriptionEn':'The gravitational acceleration diagram helps you understand the limits: of the car, the setup, and yourself.',
-            'img': 'TRACTIONCIRCLE.svg',
+            'img': 'traction.svg',
             'index':'2'
         },
         'Sector Time': {
@@ -40,16 +40,11 @@ export const store = reactive({
             'img': 'Lockingsensoraction.svg',
             'index':'6'
         },
-        'Fuel Calculator': {
-            'description': 'Calcola il carburante necessario per finire la gara o la tua stint.',
-            'descriptionEn':'Calculate the fuel needed to finish the race or your stint.',
-            'img': 'Fuelcalculator.svg',
-            'index':'7'
-        },
+
         'Delta Time': {
             'description': 'Capire dove guadagni o perdi tempo è fondamentale; il delta time serve proprio a questo.',
             'descriptionEn':'Seeing where you gain or lose time is essential; the delta time is exactly for this.',
-            'img': 'Deltatime2positive.svg',
+            'img': 'delta.svg',
             'index':'8'
         }
     },

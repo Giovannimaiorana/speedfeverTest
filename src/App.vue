@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import AppLoading from './components/AppLoading.vue';
 import sectionMotto from './pages/sectionMotto.vue';
 import sectionLivree from './pages/sectionLivree.vue';
@@ -6,90 +6,124 @@ import AppSlider from './components/AppSlider.vue';
 import AppPayment from './components/AppPayment.vue';
 import AppPartner from './components/AppPartner.vue';
 import AppContact from './components/AppContact.vue';
-import { useHead } from 'unhead'
+import { useHead } from 'unhead';
 import AppAbbonamenti from './components/abbonamentiComponent.vue';
 import cardPrice from './components/cardPrice.vue';
 import carouselLivree from './components/caroselloLivree.vue';
 import AppTestCarousel from './components/AppTestCarouselIII.vue';
 import AppJoin from './components/AppJoinComponent.vue';
 import AppMail from './components/AppMailComponent.vue';
-import helpComponent from './components/helpComponent.vue'
+import helpComponent from './components/helpComponent.vue';
+import { ref, onMounted } from 'vue';
 
-export default {
-    data() {
-    return {
-      currentLanguage: this.$i18n.locale, // Recupera la lingua attuale
-    };
-  },
-  components: {
-    AppLoading,
-    AppSlider,
-    AppContact,
-    AppPartner,
-    AppPayment,
-    sectionMotto,
-    sectionLivree,
-    AppAbbonamenti,
-    carouselLivree,
-    cardPrice,
-    AppTestCarousel,
-    AppJoin,
-    AppMail,
-    helpComponent
-  },
-  setup() {
-    useHead({
-        title: 'SpeedFever',
-        meta: [
-            {
-            name: 'description',
-            content: 'SpeedFever offre un servizio di telemetria live e overlays (widgets) con massima performance per il simracing. Studiato meticolosamente dagli ingegneri informatici per favorire le prestazioni hardware e assisterti nelle gare.',
-            },
-        ],
-    })
-},
-methods: {
-    setLanguage(lang) {
-      this.currentLanguage = lang; // Aggiorna la lingua corrente
-      this.$i18n.locale = lang; // Cambia la lingua nell'i18n
+// versione attuale della tua app
+const currentVersion = ref(2600);
+const latestVersion = ref(null);
+const showCookieBanner = ref(true);
+const currentLanguage = ref('it');
+
+// head SEO
+useHead({
+  title: 'SpeedFever',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'SpeedFever offre un servizio di telemetria live e overlays (widgets) con massima performance per il simracing. Studiato meticolosamente dagli ingegneri informatici per favorire le prestazioni hardware e assisterti nelle gare.',
     },
-    downloadSetup() {
-  const url = 'https://github.com/Alexxandrot/SFReleases/releases/download/V2.5.0.7/SpeedFeverTest1.zip'; 
+  ],
+});
+
+// controllo cookie al mount
+onMounted(() => {
+  const consent = localStorage.getItem('cookiesAccepted');
+  if (consent === 'true') {
+    showCookieBanner.value = false;
+  }
+  checkForUpdates();
+});
+
+// --- METHODS ---
+
+function setLanguage(lang) {
+  currentLanguage.value = lang;
+}
+
+function acceptCookies() {
+  localStorage.setItem('cookiesAccepted', 'true');
+  showCookieBanner.value = false;
+}
+
+function refuseCookies() {
+  showCookieBanner.value = false;
+}
+
+async function checkForUpdates() {
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/Alexxandrot/SFReleases/releases/latest',
+      {
+        headers: { 'User-Agent': 'SpeedFeverFrontend/1.0' },
+      }
+    );
+    const data = await response.json();
+    const tag = parseInt(data.tag_name);
+    console.log(tag)
+
+    if (!isNaN(tag)) {
+      latestVersion.value = tag;
+      if (tag > currentVersion.value) {
+        if (confirm(`È disponibile una nuova versione (${tag}). Vuoi scaricarla ora?`)) {
+          downloadSetup(tag);
+        }
+      }
+    } else {
+      alert(`Formato versione non valido: ${data.tag_name}`);
+    }
+  } catch (err) {
+    alert('Errore nel controllare gli aggiornamenti: ' + err.message);
+  }
+}
+
+function downloadSetup(version) {
+  const url = `https://github.com/Alexxandrot/SFReleases/releases/download/${version}/SpeedFeverInstaller${version}.exe`;
   window.open(url, '_blank');
 }
-  }
-
-
-  
-}
-
 </script>
-
 <template>
-   <div class="containerGeneral">
-    <div v-if="$route.path === '/'">
-            <div class="containerStart"  id="primaSezione">
+    <div class="containerGeneral">
+        <div v-if="$route.path === '/'">
+            <div class="containerStart" id="primaSezione">
                 <div class="video-overlay"></div>
-                <img class="imgResponsiveStyle" src="/img/backgroundimage8.webp" alt=""><!--2/3/6/8 fare carosello in modalità 760 togliere foto 2 -->
-                 <a href="#primaSezione" class="logoWhite" @click="scrollToPrimaSezione">
-                    <img class="logo" src="/img/biancoSuRosso.webp"  alt="">
-                 </a>
+                <img class="imgResponsiveStyle" src="/img/backgroundimage8.webp"
+                    alt=""><!--2/3/6/8 fare carosello in modalità 760 togliere foto 2 -->
+                <a href="#primaSezione" class="logoWhite" @click="scrollToPrimaSezione">
+                    <img class="logo" src="/img/biancoSuRosso.webp" alt="">
+                </a>
                 <div class="textLogo">
                     <p class="poppins-semibold text-white text-4xl">SPEED FEVER</p>
-                    <p class="fonttitle poppins-light  text-white text-left  letteringSpace0 text-center">BE A BETTER  DRIVER</p> 
+                    <p class="fonttitle poppins-light  text-white text-left  letteringSpace0 text-center">BE A BETTER
+                        DRIVER</p>
                 </div>
                 <div class="sezioneChangeLanguage">
-                    <p class="text-white text-left text-sm"> <span    :class="{ activeLang: currentLanguage === 'it', notActive: currentLanguage !== 'it' }" 
-                        @click="setLanguage('it')">IT</span> / <span    :class="{ activeLang: currentLanguage === 'en', notActive: currentLanguage !== 'en' }" 
-                        @click="setLanguage('en')">EN</span></p>
+                    <p class="text-white text-left text-sm"> <span
+                            :class="{ activeLang: currentLanguage === 'it', notActive: currentLanguage !== 'it' }"
+                            @click="setLanguage('it')">IT</span> / <span
+                            :class="{ activeLang: currentLanguage === 'en', notActive: currentLanguage !== 'en' }"
+                            @click="setLanguage('en')">EN</span></p>
 
                 </div>
-              
+
                 <div class="texTitle">
-                    <p class=" poppins-semibold text-white md:text-2xl text-left"> <span class="text-7xl"><span class="personali">S</span>PEED <span class="personali">F</span>EVER </span>  </p>
-                    <p class=" poppins-semibold text-white md:text-2xl text-left"> <span class="text-7xl  ">BE A  <span class="letteringSpaceBetter">BETTER </span></span> </p>
-                    <p class=" poppins-semibold text-white md:text-2xl text-left">  <span class="text-7xl">DRIVER </span> </p>
-                    <p class="poppins-light text-white text-left testoExtra letteringSpace0"> {{ $t('first') }}<br>  <span class="">{{ $t('second') }}</span> <br> <span class="">{{ $t('third') }}</span> <br> <span> {{ $t('fourth') }}</span></p> 
+                    <p class=" poppins-semibold text-white md:text-2xl text-left"> <span class="text-7xl"><span
+                                class="personali">S</span>PEED <span class="personali">F</span>EVER </span> </p>
+                    <p class=" poppins-semibold text-white md:text-2xl text-left"> <span class="text-7xl  ">BE A <span
+                                class="letteringSpaceBetter">BETTER </span></span> </p>
+                    <p class=" poppins-semibold text-white md:text-2xl text-left"> <span class="text-7xl">DRIVER </span>
+                    </p>
+                    <p class="poppins-light text-white text-left testoExtra letteringSpace0"> {{ $t('first') }}<br>
+                        <span class="">{{ $t('second') }}</span> <br> <span class="">{{ $t('third') }}</span> <br>
+                        <span> {{ $t('fourth') }}</span></p>
                 </div>
                 <div class="texTitleMobile">
                     <p class=" poppins-semibold text-white text-7xl text-left">THE MOST </p>
@@ -98,11 +132,11 @@ methods: {
 
 
                 </div>
-          
+
                 <div class="containerButton">
-                      <button class="button type1"  @click="downloadSetup">
-                         <span class="btn-txt  poppins-semibold">{{ $t('download') }}</span>
-                      </button>
+                    <button class="button type1" @click="downloadSetup(latestVersion)">
+                        <span class="btn-txt  poppins-semibold">{{ $t('download') }}</span>
+                    </button>
                 </div>
                 <div class="containerButtonTest">
                     <div class="flex">
@@ -110,45 +144,64 @@ methods: {
                         <img class="arrowDown" src="/img/arrow-down-solid.svg" alt="">
                     </div>
                 </div>
-                
-               
+
+
             </div>
-            
+
             <div class="containerMotto">
-               <sectionMotto/>
-        </div>      
+                <sectionMotto />
+            </div>
 
             <div class="containerWidget">
                 <AppTestCarousel></AppTestCarousel>
-            </div>  
+            </div>
 
             <div class="containerJoin">
-               <AppJoin/>
-             </div>  
-             <div class="containerMail">
-               <AppMail/>
-        </div>   
-        <div class="containerGeneralLivree">
-            <div class="sezioneTitle">
-               <p class="poppins-semibold text-white text-4xl text-center mb-5">LIVREE DESIGN</p>
+                <AppJoin />
             </div>
-            <carouselLivree/>
-        </div>
+            <div class="containerMail">
+                <AppMail />
+            </div>
+            <div class="containerGeneralLivree">
+                <div class="sezioneTitle">
+                    <p class="poppins-semibold text-white text-4xl text-center mb-5">LIVREE DESIGN</p>
+                </div>
+                <carouselLivree />
+            </div>
 
-       <div class="containerPrice">
-            <div class="sezioneTitle">
-               <p class="poppins-semibold text-white text-4xl text-center ">SCEGLI IL TUO PIANO</p>
+            <div class="containerPrice">
+                <div class="sezioneTitle">
+                    <p class="poppins-semibold text-white text-4xl text-center ">SCEGLI IL TUO PIANO</p>
+                </div>
+                <cardPrice />
             </div>
-               <cardPrice/>
-        </div>    
-        <div class="wrapperHelp">
-            <helpComponent/>
+            <div class="wrapperHelp">
+                <helpComponent />
+            </div>
+            <div class="containerContact">
+                <AppContact />
+            </div>
+            <div  class="cookieBanner" v-if="showCookieBanner">
+      Tipologie di cookie utilizzate<br />
+      Speed Fever utilizza esclusivamente cookie tecnici, indispensabili per garantire il corretto
+      funzionamento dell’app e del sito. Non utilizziamo cookie di profilazione, pubblicitari o di terze
+      parti.
+      <br /><br />
+      I cookie tecnici impiegati possono includere:
+      <ul>
+        <li>Cookie di sessione: permettono il login e la gestione sicura dell’account utente.</li>
+        <li>Cookie di preferenze: salvano le impostazioni dell’utente (es. lingua).</li>
+        <li>Cookie di sicurezza: aiutano a prevenire accessi non autorizzati o comportamenti sospetti.</li>
+        <li>Cookie per il salvataggio del consenso: registrano le scelte dell’utente in materia di privacy e cookie.</li>
+      </ul>
+
+      <div class="containerButton1">
+        <button class="button2" @click="acceptCookies">ACCETTA</button>
+        <button class="button2" @click="refuseCookies">RIFIUTA</button>
+      </div>
+    </div>
         </div>
-        <div class="containerContact">
-            <AppContact/>
-         </div>   
-    </div> 
-    <router-view v-else />
+        <router-view v-else />
     </div>
     <!--<div class="pageComing">
         <div class="wrapperComingLogo">
@@ -177,94 +230,129 @@ methods: {
         </div>
 
     </div>-->
-    <AppLoading/>
+    <AppLoading />
 </template>
 
 <style scoped>
 /**CSS PRIMA SEZIONE */
-.containerGeneral{
+.containerButton1{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.cookieBanner {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 40%;
+    height: auto;
+    border: 1px solid white;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.containerGeneral {
     width: 100%;
     height: 100%;
 
 }
-.wrapperOne{
+
+.wrapperOne {
     width: 100%;
     height: 100%;
 }
-.containerStart{
+
+.containerStart {
     width: 100%;
     height: 100vh;
     position: relative;
 }
+
 .fullscreen-video {
-  width: 100%; 
-  height: 100%;
-  object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-.logoWhite{
+
+.logoWhite {
     position: fixed;
-    top: 13px; 
-    left: 20px; 
-    z-index: 1000; 
+    top: 13px;
+    left: 20px;
+    z-index: 1000;
 }
-.logo{
+
+.logo {
     width: 70px;
     cursor: pointer;
 }
-.personali{
+
+.personali {
     color: #9d191d;
 }
-.textLogo{
-text-align: center;
-position: absolute;
-top: 19px;
-left: 50%;
-transform: translate(-50%);
-z-index: 900;
+
+.textLogo {
+    text-align: center;
+    position: absolute;
+    top: 19px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 900;
 }
-.sezioneChangeLanguage{
-text-align: center;
-position: absolute;
-top: 19px;
-right: 2%;
-z-index: 900;
+
+.sezioneChangeLanguage {
+    text-align: center;
+    position: absolute;
+    top: 19px;
+    right: 2%;
+    z-index: 900;
 }
-.activeLang{
+
+.activeLang {
     color: #9d191d;
     cursor: pointer;
 }
-.notActive{
+
+.notActive {
     cursor: pointer;
     color: white;
     font-size: 10px;
 }
-.texTitle{
-text-align: center;
-position: relative;
-position: absolute;
-bottom: 17%;
-left: 1%;
-z-index: 900;
+
+.texTitle {
+    text-align: center;
+    position: relative;
+    position: absolute;
+    bottom: 17%;
+    left: 1%;
+    z-index: 900;
 }
-.texTitleMobile{
+
+.texTitleMobile {
     display: none;
 }
-.testoExtra{
+
+.testoExtra {
     position: absolute;
     top: 70%;
     right: 4%;
     font-size: 8px;
 }
-.letteringSpace0{
+
+.letteringSpace0 {
     letter-spacing: 2px;
 }
-.letteringSpace{
+
+.letteringSpace {
     letter-spacing: 2px;
 }
-.letteringSpaceBetter{
+
+.letteringSpaceBetter {
     letter-spacing: 4px;
 }
-.overlayWritten{
+
+.overlayWritten {
     position: absolute;
     width: 820px;
     height: 257px;
@@ -272,18 +360,21 @@ z-index: 900;
     left: 0;
     bottom: 8%;
 }
+
 .video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,5.5),rgba(0,0,0,0.5), rgba(0,0,0,0));
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 5.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
-.fonttitle{
+
+.fonttitle {
     font-size: 7px
 }
-.buttonTest{
+
+.buttonTest {
     width: 110px;
     height: 110px;
     border-radius: 50%;
@@ -292,22 +383,26 @@ z-index: 900;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.5s ease; 
+    transition: background-color 0.5s ease;
 }
-.buttonTest:hover{
+
+.buttonTest:hover {
     background-color: #9d191d;
 }
-.containerButtonTest{
+
+.containerButtonTest {
     position: absolute;
     bottom: 5%;
     right: 2%;
 }
-.arrowDown{
+
+.arrowDown {
     width: 15px;
     margin-left: 8px;
 }
+
 /**CSS SECONDA SEZIONE */
-.containerWidget{
+.containerWidget {
     width: 100%;
     height: auto;
     background-repeat: no-repeat;
@@ -318,8 +413,9 @@ z-index: 900;
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
 /**CSS TERZA SEZIONE */
-.containerMotto{
+.containerMotto {
     width: 100%;
     background-color: black;
     background-image: url(./img/motto4.svg);
@@ -327,7 +423,8 @@ z-index: 900;
     background-size: cover;
     background-position: bottom;
 }
-.containerPrice{
+
+.containerPrice {
     width: 100%;
     height: auto;
     padding-top: 50px;
@@ -339,14 +436,16 @@ z-index: 900;
     background-position: center;
     overflow-x: hidden;
 }
+
 /**CSS QUARTA SEZIONE */
-.containerLivree{
+.containerLivree {
     width: 100%;
     height: auto;
     overflow-x: hidden;
- 
+
 }
-.containerJoin{
+
+.containerJoin {
     width: 100%;
     height: auto;
     background-color: black;
@@ -356,79 +455,96 @@ z-index: 900;
     background-position: center;
     overflow-x: hidden;
 }
+
 /**CSS QUINTA SEZIONE */
-.containerPlan{
+.containerPlan {
     width: 100%;
     height: auto;
-    background-color: black;   
+    background-color: black;
     overflow-x: hidden;
 }
 
 /**CSS SETTIMA SEZIONE */
-.containerContact{
+.containerContact {
     width: 100%;
     height: auto;
-    background-color:black;  
+    background-color: black;
     overflow-x: hidden;
 }
-.containerGeneralLivree{
+
+.containerGeneralLivree {
     width: 100%;
     height: auto;
-    background-color:black;  
+    background-color: black;
     padding-top: 50px;
     overflow-x: hidden;
     padding-bottom: 50px;
 }
-/**BUTTON STYLE */ /**PER MOSTRARE BOTTONE DOWNLOAD */
-.containerButton{
+
+/**BUTTON STYLE */
+/**PER MOSTRARE BOTTONE DOWNLOAD */
+.containerButton {
     position: absolute;
     bottom: 70px;
     left: 50%;
     transform: translate(-50%);
 }
-.button {
-  height: 50px;
-  width: 200px;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-  border: 3px solid #9d191d;
-  overflow: hidden;
-  border-radius: 10px;
-  color:#9d191d;
-  transition: all 0.5s ease-in-out;
-}
 
+.button {
+    height: 50px;
+    width: 200px;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    border: 3px solid #9d191d;
+    overflow: hidden;
+    border-radius: 10px;
+    color: #9d191d;
+    transition: all 0.5s ease-in-out;
+}
+.button2{
+    height: 50px;
+    width: 200px;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    border: 3px solid #9d191d;
+    overflow: hidden;
+    border-radius: 10px;
+    color: #9d191d;
+    transition: all 0.5s ease-in-out;
+}
 .btn-txt {
-  z-index: 1;
-  letter-spacing: 5px;
+    z-index: 1;
+    letter-spacing: 5px;
 }
 
 .type1::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  transition: all 0.5s ease-in-out;
-  background-color:  #9d191d;
-  border-radius: 30px;
-  visibility: hidden;
-  height: 10px;
-  width: 10px;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all 0.5s ease-in-out;
+    background-color: #9d191d;
+    border-radius: 30px;
+    visibility: hidden;
+    height: 10px;
+    width: 10px;
+    z-index: -1;
 }
 
 .button:hover {
-  box-shadow: 1px 1px 200px #252525;
-  color: #fff;
-  border: none;
+    box-shadow: 1px 1px 200px #252525;
+    color: #fff;
+    border: none;
 }
 
 .type1:hover::after {
-  visibility: visible;
-  transform: scale(100) translateX(2px);
+    visibility: visible;
+    transform: scale(100) translateX(2px);
 }
-.pageComing{
+
+.pageComing {
     width: 100%;
     height: 100vh;
     background-color: black;
@@ -439,7 +555,8 @@ z-index: 900;
     flex-direction: column;
     justify-content: space-between;
 }
-.wrapperComingLogo{
+
+.wrapperComingLogo {
     width: 100%;
     height: auto;
     display: flex;
@@ -447,10 +564,12 @@ z-index: 900;
     justify-content: center;
     flex-direction: column;
 }
-.wrapperComingLogo img{
+
+.wrapperComingLogo img {
     height: 20vh;
 }
-.wrapperTextComing{
+
+.wrapperTextComing {
     width: 100%;
     height: auto;
     display: flex;
@@ -458,79 +577,96 @@ z-index: 900;
     justify-content: center;
     align-items: center;
 }
-.wrapperTextComing img{
+
+.wrapperTextComing img {
     width: 15vw;
 }
-.wrapperSocialComing{
+
+.wrapperSocialComing {
     width: 100%;
     display: flex;
     flex-direction: column;
 
 }
-.containerMail{
+
+.containerMail {
     width: 100%;
     background-color: black;
 }
-.containerSocial{
+
+.containerSocial {
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 10px;
     padding-bottom: 20px;
 }
-.logosocial img{
-height: 30px;
-}
-.wrapperComingLogo p{
-    margin-top: -40px;
-}
-/**MEDIA QUERY TABLET */
-@media (max-width: 950px) {
-    .containerPlan{
-    width: 100%;
-    height: 100vh;
-    background-color: black;   
-}
-}
-/**MEDIA QUERY MOBILE */
-@media (max-width: 767px) {
-.texTitle{
-display: none;
-}
-.sezioneChangeLanguage{
-    display: none;
-}
-.logoWhite{
-display: none;
-}
-.containerButtonTest{
-    position: absolute;
-    bottom: 2%;
-    right: 2%;
-    font-size: 10px;
-}
-.arrowDown{
-    width: 10px;
-    margin-left: 5px;
-}
-.texTitleMobile{
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+
+.logosocial img {
+    height: 30px;
 }
 
-.wrapperTextComing img{
-    width: 50vw;
+.wrapperComingLogo p {
+    margin-top: -40px;
 }
+
+/**MEDIA QUERY TABLET */
+@media (max-width: 950px) {
+    .containerPlan {
+        width: 100%;
+        height: 100vh;
+        background-color: black;
+    }
 }
-.imgResponsiveStyle{
+
+/**MEDIA QUERY MOBILE */
+@media (max-width: 767px) {
+    .texTitle {
+        display: none;
+    }
+    .containerButton{
+    display: none;
+}
+    .sezioneChangeLanguage {
+        display: none;
+    }
+
+    .logoWhite {
+        display: none;
+    }
+
+    .containerButtonTest {
+        position: absolute;
+        bottom: 2%;
+        right: 2%;
+        font-size: 10px;
+    }
+
+    .arrowDown {
+        width: 10px;
+        margin-left: 5px;
+    }
+
+    .texTitleMobile {
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        bottom: 2%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .wrapperTextComing img {
+        width: 50vw;
+    }
+}
+
+.imgResponsiveStyle {
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
+
 </style>
